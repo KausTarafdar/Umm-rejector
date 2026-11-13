@@ -18,6 +18,16 @@ SIDECAR_PID_FILE = DATA_DIR / "whisper-server.pid"
 WHISPER_MODEL_PATH = MODELS_DIR / os.environ.get("UMM_WHISPER_MODEL", "ggml-base-q5_1.bin")
 WHISPER_MODEL_UNLOAD_IDLE_SECS = 300
 
+# Silero VAD weights, required by the sidecar's --vad flag.
+SILERO_VAD_PATH = MODELS_DIR / "ggml-silero-v6.2.0.bin"
+
+# Uhm filler-spotter model (Desert Ant Labs, ONNX fp16). Input is (1, 480000)
+# float32 16 kHz mono, output is (1, 1499, 6) per-20ms-frame softmax over
+# 0=not_filler, 1=uh, 2=um, 3=hmm, 4=and, 5=other.
+UHM_MODEL_PATH = MODELS_DIR / os.environ.get("UMM_SPOTTER_MODEL", "uhm-web-fp16.onnx")
+SPOTTER_THRESHOLD = float(os.environ.get("UMM_SPOTTER_THRESHOLD", "0.65"))
+SPOTTER_MIN_DURATION = 0.08
+
 # Anti-hallucination decoder thresholds (see OpenWhispr research).
 ENTROPY_THOLD = 2.8
 LOGPROB_THOLD = -1.25

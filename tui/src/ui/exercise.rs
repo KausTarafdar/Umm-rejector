@@ -1,5 +1,5 @@
 use ratatui::Frame;
-use ratatui::layout::{Constraint, Layout};
+use ratatui::layout::{Alignment, Constraint, Layout};
 use ratatui::style::{Color, Modifier, Style};
 use ratatui::widgets::{Block, Borders, Paragraph};
 
@@ -13,21 +13,29 @@ pub fn draw(f: &mut Frame, app: &App) {
     ])
     .areas(f.area());
 
+    let remaining = app
+        .question
+        .as_ref()
+        .map(|_| 60u32.saturating_sub(app.elapsed_secs))
+        .unwrap_or(0);
+
     let question = Paragraph::new(app.question.clone().unwrap_or_default())
-        .block(Block::new().borders(Borders::ALL).title("Question"))
+        .block(
+            Block::new()
+                .borders(Borders::ALL)
+                .title(format!("Question | {}s remaining", remaining)),
+        )
         .wrap(ratatui::widgets::Wrap { trim: true })
         .style(Style::new().add_modifier(Modifier::BOLD));
     f.render_widget(question, question_area);
 
     let counter = Paragraph::new(format!("UMM count: {}", app.filler_count))
-        .style(Style::new().fg(Color::Yellow));
+        .style(Style::new().fg(Color::Yellow))
+        .alignment(Alignment::Center);
     f.render_widget(counter, counter_area);
 
     f.render_widget(
         Paragraph::new("speak until the timer ends   [Esc] stop"),
         help_area,
     );
-
-    // TODO: countdown timer, live level meter, WebSocket spotter events
-    // bumping filler_count.
 }

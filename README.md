@@ -85,13 +85,23 @@ cd sidecar
 ./build.sh          # clones whisper.cpp, builds whisper-server with Metal
 ```
 
-### 2. Download a model
+### 2. Download the models
 
-Pick a GGML/GGUF Whisper model (small or base is a good start):
+Whisper GGML (base is a good start) and the two companion weights:
 
 ```sh
-make model          # or fetch manually into data/models/
+make model          # whisper GGML -> data/models/ggml-base-q5_1.bin
 ```
+
+Manual download into `data/models/`:
+
+- Whisper: https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base-q5_1.bin
+- Silero VAD (sidecar --vad): https://huggingface.co/ggml-org/whisper-vad/resolve/main/ggml-silero-v6.2.0.bin
+- Uhm filler spotter (ONNX fp16): https://huggingface.co/desert-ant-labs/uhm/resolve/v1.2.0/uhm-web-fp16.onnx
+
+The Uhm model is from Desert Ant Labs, source-available license, free for
+personal/local use. A commercial license is required at scale; see
+https://license.desertant.com/.
 
 ### 3. Run the daemon
 

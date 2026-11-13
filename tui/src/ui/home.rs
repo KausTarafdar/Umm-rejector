@@ -1,14 +1,14 @@
 use ratatui::Frame;
-use ratatui::layout::{Alignment, Constraint, Layout};
-use ratatui::style::{Color, Modifier, Style};
+use ratatui::layout::{Alignment, Constraint, Layout};use ratatui::style::{Color, Modifier, Style};
 use ratatui::widgets::{Block, Borders, Paragraph};
 
 use crate::app::App;
 
 pub fn draw(f: &mut Frame, app: &App) {
-    let [status_area, body_area, help_area] = Layout::vertical([
+    let [status_area, body_area, error_area, help_area] = Layout::vertical([
         Constraint::Length(1),
         Constraint::Min(3),
+        Constraint::Length(1),
         Constraint::Length(1),
     ])
     .areas(f.area());
@@ -28,6 +28,10 @@ pub fn draw(f: &mut Frame, app: &App) {
     .block(Block::new().borders(Borders::ALL).title("Home"))
     .style(Style::new().add_modifier(Modifier::BOLD));
     f.render_widget(body, body_area);
+
+    if let Some(err) = &app.error {
+        f.render_widget(Paragraph::new(err.clone()).style(Style::new().fg(Color::Red)), error_area);
+    }
 
     f.render_widget(
         Paragraph::new("[Enter] start   [q] quit"),

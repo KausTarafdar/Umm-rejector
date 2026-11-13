@@ -54,7 +54,8 @@ def history(limit: int = 50) -> list[dict]:
             (limit,),
         ).fetchall()
     return [
-        {**dict(r), "report": json.loads(r.pop("report_json"))} for r in rows
+        {**{k: r[k] for k in r.keys() if k != "report_json"}, "report": json.loads(r["report_json"])}
+        for r in rows
     ]
 
 

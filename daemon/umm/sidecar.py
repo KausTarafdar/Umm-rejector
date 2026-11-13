@@ -64,6 +64,7 @@ class SidecarManager:
                 "--host", "127.0.0.1",
                 "--port", str(self.port),
                 "--vad",
+                "--vad-model", str(config.SILERO_VAD_PATH),
                 f"--entropy-thold", str(config.ENTROPY_THOLD),
                 f"--logprob-thold", str(config.LOGPROB_THOLD),
             ],
