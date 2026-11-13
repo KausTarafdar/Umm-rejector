@@ -218,3 +218,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# umm-rejector runtime data
+data/
+daemon/.venv/
+daemon/*.egg-info/
+sidecar/whisper.cpp/
+
+.pytest_cache/
+__pycache__/
